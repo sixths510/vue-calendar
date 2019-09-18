@@ -155,6 +155,7 @@ wh_content_item_tag {
             class="wh_item_date"
             v-bind:class="[{ wh_isMark: item.isMark},{wh_other_dayhide:item.otherMonth!=='nowMonth'},{wh_want_dayhide:item.dayHide},{wh_isToday:item.isToday},{wh_chose_day:item.chooseDay},setClass(item)]"
           >{{item.id}}</div>
+          <div class="cirRed"></div>
         </div>
       </div>
     </div>
