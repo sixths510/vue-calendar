@@ -1,9 +1,9 @@
 <style scoped>
 @media screen and (min-width: 460px) {
-  .wh_item_date:hover {
+  /* .wh_item_date:hover {
     background: #71c7a5;
     cursor: pointer;
-  }
+  } */
 }
 * {
   margin: 0;
@@ -19,13 +19,14 @@ li {
   list-style-type: none;
 }
 .wh_top_changge {
-  display: flex;
+  /* display: flex; */
+  display: none;
 }
 
 .wh_top_changge li {
   cursor: pointer;
   display: flex;
-  color: #fff;
+  color: #333333;
   font-size: 18px;
   flex: 1;
   justify-content: center;
@@ -40,7 +41,7 @@ li {
 .wh_content_all {
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
     "Helvetica Neue", STHeiti, "Microsoft Yahei", Tahoma, Simsun, sans-serif;
-  background-color: #0fc37c;
+  background-color: #ffffff;
   width: 100%;
   overflow: hidden;
   padding-bottom: 8px;
@@ -55,20 +56,35 @@ li {
 
 .wh_content:first-child .wh_content_item_tag,
 .wh_content:first-child .wh_content_item {
-  color: #ddd;
-  font-size: 16px;
+  font-size: 23.04px;
+  color: #3a3a3a;
 }
 
 .wh_content_item,
 wh_content_item_tag {
-  font-size: 15px;
   width: 13.4%;
   text-align: center;
-  color: #fff;
+  font-size: 23.04px;
+  color: #3a3a3a;
   position: relative;
+  border: 1px solid #eef1f5;
 }
 .wh_content_item {
+  height: 80px;
+}
+.wh_content_item2 {
   height: 40px;
+}
+.wh_content_item2,
+wh_content_item_tag {
+  background: #d9dde6;
+  width: 13.4%;
+  font-size: 15.36px;
+  color: #3a3a3a;
+  letter-spacing: 1.06px;
+  text-align: center;
+  position: relative;
+  border: 1px solid #d9dde6;
 }
 
 .wh_top_tag {
@@ -82,20 +98,20 @@ wh_content_item_tag {
 }
 
 .wh_item_date {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  margin: auto;
+  /* width: 40px; */
+  /* height: 40px; */
+  margin-top: 20px;
+  /* margin: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
 }
 
 .wh_jiantou1 {
   width: 12px;
   height: 12px;
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff;
+  border-top: 2px solid #333333;
+  border-left: 2px solid #333333;
   transform: rotate(-45deg);
 }
 
@@ -107,8 +123,8 @@ wh_content_item_tag {
 .wh_jiantou2 {
   width: 12px;
   height: 12px;
-  border-top: 2px solid #ffffff;
-  border-right: 2px solid #ffffff;
+  border-top: 2px solid #333333;
+  border-right: 2px solid #333333;
   transform: rotate(45deg);
 }
 .wh_content_item > .wh_isMark {
@@ -119,17 +135,25 @@ wh_content_item_tag {
 }
 .wh_content_item .wh_other_dayhide {
   color: #bfbfbf;
+  line-height: 45px;
 }
 .wh_content_item .wh_want_dayhide {
   color: #bfbfbf;
 }
 .wh_content_item .wh_isToday {
-  background: yellow;
+  /* background: yellow; */
   border-radius: 100px;
 }
 .wh_content_item .wh_chose_day {
-  background: green;
+  /* background: green; */
   border-radius: 100px;
+}
+.tip {
+  font-size: 13px;
+  position: absolute;
+  color: #00000066;
+  top: 52px;
+  left: 125px;
 }
 </style>
 <template>
@@ -145,7 +169,7 @@ wh_content_item_tag {
         </li>
       </div>
       <div class="wh_content">
-        <div class="wh_content_item" v-for="tag in textTop">
+        <div class="wh_content_item2" v-for="tag in textTop">
           <div class="wh_top_tag">{{tag}}</div>
         </div>
       </div>
@@ -153,9 +177,15 @@ wh_content_item_tag {
         <div class="wh_content_item" v-for="(item,index) in list" @click="clickDay(item,index)">
           <div
             class="wh_item_date"
-            v-bind:class="[{ wh_isMark: item.isMark},{wh_other_dayhide:item.otherMonth!=='nowMonth'},{wh_want_dayhide:item.dayHide},{wh_isToday:item.isToday},{wh_chose_day:item.chooseDay},setClass(item)]"
+            v-bind:class="[{ wh_isMark: item.isMark},{wh_other_dayhide:item.otherMonth!=='nowMonth'},{wh_want_dayhide:item.dayHide},{wh_isToday:item.isToday},{wh_chose_day:item.chooseDay},setClass(item,1)]"
           >{{item.id}}</div>
-          <div class="cirRed"></div>
+          <div v-bind:class="[{ wh_isMark: item.isMark},setClass(item)]"></div>
+          <span v-show="item.markClassName=='cirGray'" class="tip">未出勤</span>
+          <span v-show="item.markClassName=='cirRed'" class="tip">缺卡</span>
+          <span v-show="item.markClassName=='cirYellow'" class="tip">异常</span>
+          <span v-show="item.markClassName=='cirBlue'" class="tip">正常出勤</span>
+          <!-- <span v-show="[{ wh_isMark: item.isMark},setClass(item)]=='cirGray'">未出勤</span> -->
+          <!-- 0无考勤，1、正常 2、迟到 3、早退 4、加班5、缺卡 -->
         </div>
       </div>
     </div>
@@ -172,7 +202,14 @@ export default {
       dateTop: ""
     };
   },
+  filters: {
+    check(val) {
+      console.log(val);
+      return 0;
+    }
+  },
   props: {
+    attendanceList: {},
     markDate: {
       type: Array,
       default: () => []
@@ -201,15 +238,23 @@ export default {
   created() {
     this.intStart();
     this.myDate = new Date();
+    console.log(this.attendanceList);
   },
   methods: {
     intStart() {
       timeUtil.sundayStart = this.sundayStart;
     },
-    setClass(data) {
-      let obj = {};
-      obj[data.markClassName] = data.markClassName;
-      return obj;
+    setClass(data, type) {
+      if (type == 1) {
+        let obj = {};
+        if (data.markClassName.indexOf("cir") == -1) {
+          obj[data.markClassName] = data.markClassName;
+        }
+      } else {
+        let obj = {};
+        obj[data.markClassName] = data.markClassName;
+        return obj;
+      }
     },
     clickDay: function(item, index) {
       if (item.otherMonth === "nowMonth" && !item.dayHide) {
@@ -280,6 +325,7 @@ export default {
           }
         }
         //标记选中某些天 设置class
+
         k.markClassName = markClassName;
         k.isMark = markDate.indexOf(nowTime) > -1;
         //无法选中某天
@@ -301,6 +347,8 @@ export default {
         }
       }
       this.list = arr;
+
+      console.log(this.list);
     }
   },
   mounted() {
